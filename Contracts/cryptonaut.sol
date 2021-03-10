@@ -2,19 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import "./IERC721.sol";
-import "./IERC721Receiver.sol";
-import "./extensions/IERC721Metadata.sol";
-import "./extensions/IERC721Enumerable.sol";
-import "../../utils/Address.sol";
-import "../../utils/Context.sol";
-import "../../utils/Strings.sol";
-import "../../utils/introspection/ERC165.sol";
-
-// SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.0;
-
 /*
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
@@ -36,11 +23,304 @@ abstract contract Context {
     }
 }
 
-// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/**
+ * @dev Collection of functions related to the address type
+ */
+library Address {
+    /**
+     * @dev Returns true if `account` is a contract.
+     *
+     * [IMPORTANT]
+     * ====
+     * It is unsafe to assume that an address for which this function returns
+     * false is an externally-owned account (EOA) and not a contract.
+     *
+     * Among others, `isContract` will return false for the following
+     * types of addresses:
+     *
+     *  - an externally-owned account
+     *  - a contract in construction
+     *  - an address where a contract will be created
+     *  - an address where a contract lived, but was destroyed
+     * ====
+     */
+    function isContract(address account) internal view returns (bool) {
+        // This method relies on extcodesize, which returns 0 for contracts in
+        // construction, since the code is only stored at the end of the
+        // constructor execution.
+
+        uint256 size;
+        // solhint-disable-next-line no-inline-assembly
+        assembly { size := extcodesize(account) }
+        return size > 0;
+    }
+
+    /**
+     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
+     * `recipient`, forwarding all available gas and reverting on errors.
+     *
+     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
+     * of certain opcodes, possibly making contracts go over the 2300 gas limit
+     * imposed by `transfer`, making them unable to receive funds via
+     * `transfer`. {sendValue} removes this limitation.
+     *
+     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
+     *
+     * IMPORTANT: because control is transferred to `recipient`, care must be
+     * taken to not create reentrancy vulnerabilities. Consider using
+     * {ReentrancyGuard} or the
+     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
+     */
+    function sendValue(address payable recipient, uint256 amount) internal {
+        require(address(this).balance >= amount, "Address: insufficient balance");
+
+        // solhint-disable-next-line avoid-low-level-calls, avoid-call-value
+        (bool success, ) = recipient.call{ value: amount }("");
+        require(success, "Address: unable to send value, recipient may have reverted");
+    }
+
+    /**
+     * @dev Performs a Solidity function call using a low level `call`. A
+     * plain`call` is an unsafe replacement for a function call: use this
+     * function instead.
+     *
+     * If `target` reverts with a revert reason, it is bubbled up by this
+     * function (like regular Solidity function calls).
+     *
+     * Returns the raw returned data. To convert to the expected return value,
+     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].
+     *
+     * Requirements:
+     *
+     * - `target` must be a contract.
+     * - calling `target` with `data` must not revert.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(address target, bytes memory data) internal returns (bytes memory) {
+      return functionCall(target, data, "Address: low-level call failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with
+     * `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {
+        return functionCallWithValue(target, data, 0, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but also transferring `value` wei to `target`.
+     *
+     * Requirements:
+     *
+     * - the calling contract must have an ETH balance of at least `value`.
+     * - the called Solidity function must be `payable`.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(address target, bytes memory data, uint256 value) internal returns (bytes memory) {
+        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but
+     * with `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(address target, bytes memory data, uint256 value, string memory errorMessage) internal returns (bytes memory) {
+        require(address(this).balance >= value, "Address: insufficient balance for call");
+        require(isContract(target), "Address: call to non-contract");
+
+        // solhint-disable-next-line avoid-low-level-calls
+        (bool success, bytes memory returndata) = target.call{ value: value }(data);
+        return _verifyCallResult(success, returndata, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but performing a static call.
+     *
+     * _Available since v3.3._
+     */
+    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
+        return functionStaticCall(target, data, "Address: low-level static call failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
+     * but performing a static call.
+     *
+     * _Available since v3.3._
+     */
+    function functionStaticCall(address target, bytes memory data, string memory errorMessage) internal view returns (bytes memory) {
+        require(isContract(target), "Address: static call to non-contract");
+
+        // solhint-disable-next-line avoid-low-level-calls
+        (bool success, bytes memory returndata) = target.staticcall(data);
+        return _verifyCallResult(success, returndata, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but performing a delegate call.
+     *
+     * _Available since v3.4._
+     */
+    function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {
+        return functionDelegateCall(target, data, "Address: low-level delegate call failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
+     * but performing a delegate call.
+     *
+     * _Available since v3.4._
+     */
+    function functionDelegateCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {
+        require(isContract(target), "Address: delegate call to non-contract");
+
+        // solhint-disable-next-line avoid-low-level-calls
+        (bool success, bytes memory returndata) = target.delegatecall(data);
+        return _verifyCallResult(success, returndata, errorMessage);
+    }
+
+    function _verifyCallResult(bool success, bytes memory returndata, string memory errorMessage) private pure returns(bytes memory) {
+        if (success) {
+            return returndata;
+        } else {
+            // Look for revert reason and bubble it up if present
+            if (returndata.length > 0) {
+                // The easiest way to bubble the revert reason is using memory via assembly
+
+                // solhint-disable-next-line no-inline-assembly
+                assembly {
+                    let returndata_size := mload(returndata)
+                    revert(add(32, returndata), returndata_size)
+                }
+            } else {
+                revert(errorMessage);
+            }
+        }
+    }
+}
 
 pragma solidity ^0.8.0;
 
-import "./IERC165.sol";
+/**
+ * @dev String operations.
+ */
+library Strings {
+    bytes16 private constant alphabet = "0123456789abcdef";
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` decimal representation.
+     */
+    function toString(uint256 value) internal pure returns (string memory) {
+        // Inspired by OraclizeAPI's implementation - MIT licence
+        // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
+
+        if (value == 0) {
+            return "0";
+        }
+        uint256 temp = value;
+        uint256 digits;
+        while (temp != 0) {
+            digits++;
+            temp /= 10;
+        }
+        bytes memory buffer = new bytes(digits);
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
+        }
+        return string(buffer);
+    }
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation.
+     */
+    function toHexString(uint256 value) internal pure returns (string memory) {
+        if (value == 0) {
+            return "0x00";
+        }
+        uint256 temp = value;
+        uint256 length = 0;
+        while (temp != 0) {
+            length++;
+            temp >>= 8;
+        }
+        return toHexString(value, length);
+    }
+
+    /**
+     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
+     */
+    function toHexString(uint256 value, uint256 length) internal pure returns (string memory) {
+        bytes memory buffer = new bytes(2 * length + 2);
+        buffer[0] = "0";
+        buffer[1] = "x";
+        for (uint256 i = 2 * length + 1; i > 1; --i) {
+            buffer[i] = alphabet[value & 0xf];
+            value >>= 4;
+        }
+        require(value == 0, "Strings: hex length insufficient");
+        return string(buffer);
+    }
+
+}
+
+pragma solidity ^0.8.0;
+
+/**
+ * @title ERC721 token receiver interface
+ * @dev Interface for any contract that wants to support safeTransfers
+ * from ERC721 asset contracts.
+ */
+interface IERC721Receiver {
+    /**
+     * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}
+     * by `operator` from `from`, this function is called.
+     *
+     * It must return its Solidity selector to confirm the token transfer.
+     * If any other value is returned or the interface is not implemented by the recipient, the transfer will be reverted.
+     *
+     * The selector can be obtained in Solidity with `IERC721.onERC721Received.selector`.
+     */
+    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4);
+}
+
+pragma solidity ^0.8.0;
+
+/**
+ * @dev Interface of the ERC165 standard, as defined in the
+ * https://eips.ethereum.org/EIPS/eip-165[EIP].
+ *
+ * Implementers can declare support of contract interfaces, which can then be
+ * queried by others ({ERC165Checker}).
+ *
+ * For an implementation, see {ERC165}.
+ */
+interface IERC165 {
+    /**
+     * @dev Returns true if this contract implements the interface defined by
+     * `interfaceId`. See the corresponding
+     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]
+     * to learn more about how these ids are created.
+     *
+     * This function call must use less than 30 000 gas.
+     */
+    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+}
+
+pragma solidity ^0.8.0;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -64,8 +344,6 @@ abstract contract ERC165 is IERC165 {
         return interfaceId == type(IERC165).interfaceId;
     }
 }
-
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -192,8 +470,6 @@ interface IERC721 is IERC165 {
       */
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 }
-
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -584,8 +860,6 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual { }
 }
 
-// SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
 /**
@@ -649,11 +923,8 @@ abstract contract ERC721URIStorage is ERC721 {
     }
 }
 
-// SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
-import "../utils/Context.sol";
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to
@@ -718,10 +989,11 @@ abstract contract Ownable is ERC721URIStorage {
     }
 }
 
+
 /**
  * @title ERC721Tradable
  * ERC721Tradable - ERC721 contract that whitelists a trading address.
- */
+ *
 contract ERC721Tradable is Ownable {
     using Strings for string;
 
@@ -745,7 +1017,7 @@ contract ERC721Tradable is Ownable {
 
     /**
      * Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
-     */
+     *
     function isApprovedForAll(address owner, address operator)
         public
         view
@@ -761,45 +1033,49 @@ contract ERC721Tradable is Ownable {
     }
 }
 
+*/
 /* Contract for Cryptonauts */
 
-contract Cryptonaut is ERC721Tradable{
+contract Cryptonaut is Ownable{
     uint256 public hardCap;
     uint256 public currentPrice;
     string public ipfsHash;
     bool public locked;
 
-    constructor(address _proxyRegistryAddress) 
+    constructor() //address _proxyRegistryAddress
 
-    public ERC721Tradable("Cryptonaut", "CRTN", _proxyRegistryAddress) 
+    //public ERC721Tradable("Cryptonaut", "CRTN", _proxyRegistryAddress) 
+    public ERC721("Cryptonaut", "CRTN") 
 
     {
         hardCap = 1000;
-        currentPrice = 1 * (10 ** 18) // 1 ether
+        currentPrice = 1 * (10 ** 18); // 1 ether
         locked = true;
 
     }
 
-    function buyCryptonaut(uint256 tokenId, string _token, string tokenURI) public payable {
-        require(!locked, 'Buying Cryptonauts is locked.')
+    function buyCryptonaut(uint256 tokenId) public payable {
+        //uint256 payed = msg.value;
+        
+        require(!locked, 'Buying Cryptonauts is locked.');
         require(msg.sender != address(0) && msg.sender != address(this));
         require(msg.value >= currentPrice);
-        require(!_exists(tokenId));
+        require(!_exists(tokenId), 'Token already minted.');
         require(tokenId <= hardCap, 'Sale has ended.');
 
         _safeMint(msg.sender, tokenId);
 
-        _setTokenURI(tokenId, tokenURI);
+        //_setTokenURI(tokenId, tokenURI);
     }
 
-    function sendTo(address _payee, uint256 _amount) public onlyOwner {
+    function sendTo(address payable _payee, uint256 _amount) public onlyOwner{
         require(_payee != address(0) && _payee != address(this));
         require(_amount > 0 && _amount <= address(this).balance);
         _payee.transfer(_amount);
     }
 
     function setCurrentPrice(uint256 _currentPrice) public onlyOwner {
-        currentPrice = _currentPrice;
+        currentPrice = _currentPrice * (10 ** 8);
     }
 
     function unlock() public onlyOwner {
@@ -809,7 +1085,5 @@ contract Cryptonaut is ERC721Tradable{
 
     function lock() public onlyOwner {
         require(!locked, 'Contract is locked.');
-        locked = ture;
+        locked = true;
     }
-
-}
