@@ -1,0 +1,33 @@
+/* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-size: 100%;
+    list-style-type: none;
+    //text-transform: uppercase;
+}*/
+
+html{
+    scroll-behavior: smooth;
+}
+
+body {
+	color:#ffffff;
+    font-size: 100%;
+    font-
+    background-color: white;
+    background-image: url('images/background3.jpg');
+    background-size: 1280px 625px;
+    background-attachment: fixed;
+    background-position: center;
+    /*font-family: "Courier New", Courier, monospace;*/
+    font-family:"Times New Roman", Times, serif;
+}
+
+.links {
+    /*margin-top:20px;*/
+    /*margin-right:20px;*/
+    float:right;
+    /*width:30%;*/
+}
