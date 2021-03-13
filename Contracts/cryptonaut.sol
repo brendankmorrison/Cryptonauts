@@ -1017,6 +1017,7 @@ contract Cryptonaut is Ownable{
         _safeMint(msg.sender, tokenId);
 
         //_setTokenURI(tokenId, tokenURI);
+        //test
     }
 
     function sendTo(address payable _payee, uint256 _amount) public onlyOwner{
