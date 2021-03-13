@@ -989,51 +989,7 @@ abstract contract Ownable is ERC721URIStorage {
     }
 }
 
-
-/**
- * @title ERC721Tradable
- * ERC721Tradable - ERC721 contract that whitelists a trading address.
- *
-contract ERC721Tradable is Ownable {
-    using Strings for string;
-
-    address proxyRegistryAddress;
-
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        address _proxyRegistryAddress
-    ) public ERC721(_name, _symbol) {
-        proxyRegistryAddress = _proxyRegistryAddress;
-    }
-
-    function baseTokenURI() public pure returns (string memory) {
-        return "";
-    }
-
-    function tokenURI(uint256 _tokenId) external view returns (string memory) {
-        return Strings.strConcat(baseTokenURI(), Strings.uint2str(_tokenId));
-    }
-
-    /**
-     * Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
-     *
-    function isApprovedForAll(address owner, address operator)
-        public
-        view
-        returns (bool)
-    {
-        // Whitelist OpenSea proxy contract for easy trading.
-        ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
-        if (address(proxyRegistry.proxies(owner)) == operator) {
-            return true;
-        }
-
-        return super.isApprovedForAll(owner, operator);
-    }
-}
-
-*/
+pragma solidity ^0.8.0;
 /* Contract for Cryptonauts */
 
 contract Cryptonaut is Ownable{
@@ -1041,25 +997,20 @@ contract Cryptonaut is Ownable{
     uint256 public currentPrice;
     string public ipfsHash;
     bool public locked;
+    
+    constructor() 
 
-    constructor() //address _proxyRegistryAddress
-
-    //public ERC721Tradable("Cryptonaut", "CRTN", _proxyRegistryAddress) 
-    public ERC721("Cryptonaut", "CRTN") 
-
+    ERC721('Cryptonaut', 'CRTN')
     {
         hardCap = 1000;
         currentPrice = 1 * (10 ** 18); // 1 ether
         locked = true;
-
     }
 
     function buyCryptonaut(uint256 tokenId) public payable {
-        //uint256 payed = msg.value;
-        
         require(!locked, 'Buying Cryptonauts is locked.');
         require(msg.sender != address(0) && msg.sender != address(this));
-        require(msg.value >= currentPrice);
+        require(msg.value >= currentPrice, 'Not enough ether.');
         require(!_exists(tokenId), 'Token already minted.');
         require(tokenId <= hardCap, 'Sale has ended.');
 
@@ -1070,12 +1021,20 @@ contract Cryptonaut is Ownable{
 
     function sendTo(address payable _payee, uint256 _amount) public onlyOwner{
         require(_payee != address(0) && _payee != address(this));
-        require(_amount > 0 && _amount <= address(this).balance);
+        require(_amount > 0 && _amount <= address(this).balance, 'Not enough ether in contract.');
         _payee.transfer(_amount);
+    }
+    
+    function getContractBalance() external view  returns(uint256){
+        return(address(this).balance);
     }
 
     function setCurrentPrice(uint256 _currentPrice) public onlyOwner {
-        currentPrice = _currentPrice * (10 ** 8);
+        currentPrice = _currentPrice * (10 ** 18);
+    }
+    
+    function getCurrentPrice() external view  returns(uint256){
+        return(currentPrice);
     }
 
     function unlock() public onlyOwner {
@@ -1087,3 +1046,8 @@ contract Cryptonaut is Ownable{
         require(!locked, 'Contract is locked.');
         locked = true;
     }
+}
+
+
+
+
