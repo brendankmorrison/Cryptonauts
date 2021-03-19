@@ -1016,8 +1016,7 @@ contract Cryptonaut is Ownable{
 
         _safeMint(msg.sender, tokenId);
 
-        //_setTokenURI(tokenId, tokenURI);
-        //test
+        //_setTokenURI(tokenId, tokenURI); 
     }
 
     function sendTo(address payable _payee, uint256 _amount) public onlyOwner{
@@ -1026,7 +1025,7 @@ contract Cryptonaut is Ownable{
         _payee.transfer(_amount);
     }
     
-    function getContractBalance() external view  returns(uint256){
+    function getContractBalance() public view returns(uint256){
         return(address(this).balance);
     }
 
@@ -1034,7 +1033,7 @@ contract Cryptonaut is Ownable{
         currentPrice = _currentPrice * (10 ** 18);
     }
     
-    function getCurrentPrice() external view  returns(uint256){
+    function getCurrentPrice() public view returns(uint256){
         return(currentPrice);
     }
 
@@ -1048,7 +1047,5 @@ contract Cryptonaut is Ownable{
         locked = true;
     }
 }
-
-
 
 
