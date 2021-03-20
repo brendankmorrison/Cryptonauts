@@ -2,14 +2,21 @@ import React ,{useEffect, useState} from 'react';
 import Web3 from 'web3';
 
 function App() {
+  const[Currentaccount, setCurrentaccount] = useState("no ethereum account detected.");
 
   useEffect(() => {
-    loadWeb3();
+  // initialize web3 and blockchain data on mount
+  loadWeb3();
+  loadBlockchainData();
+
+  // reload blockchain data on accountChanged event
+  window.ethereum.on('accountsChanged', function (accounts) {
     loadBlockchainData();
+  });
   }, [])
 
-  const[Currentaccount, setCurrentaccount] = useState("");
 
+  // detect ethereum browser 
   const loadWeb3 = async () => {
     if(window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -23,15 +30,18 @@ function App() {
     }
   };
 
+  // load ethereum accounts, network, and smart contracts 
   const loadBlockchainData = async () => {
     const web3 = window.web3;
 
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
     setCurrentaccount(account);
+    console.log(Currentaccount);
 
     const networkId = await web3.eth.net.getId();
   }
+
 
   return (
     <div>
