@@ -1,18 +1,37 @@
 import React ,{useEffect, useState} from 'react';
 import Web3 from 'web3';
+import Navbar from './components/navbar'
 
 function App() {
-  const[Currentaccount, setCurrentaccount] = useState("no ethereum account detected.");
+  const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
+  const[Currentnetwork, setCurrentnetwork] = useState(0);
+  //const ethereumButton = document.querySelector('.enableEthereumButton');
 
   useEffect(() => {
-  // initialize web3 and blockchain data on mount
-  loadWeb3();
-  loadBlockchainData();
+  const ethereumButton = document.querySelector('.enableEthereumButton');
 
-  // reload blockchain data on accountChanged event
-  window.ethereum.on('accountsChanged', function (accounts) {
+  // initialize web3 on mount
+  loadWeb3();
+
+
+  // connect metamask if button clicked
+  //ethereumButton.addEventListener('click', () => {
+    //loadBlockchainData();
+  //});
+
+  // load blockchain data if metamask wallet is detected
+  if (window.web3){
     loadBlockchainData();
-  });
+    // reload blockchainData on metamask accountsChanged event
+    window.ethereum.on('accountsChanged', function (accounts) {
+      loadBlockchainData();
+    });
+
+    // reload blockchainData on metamask networkChanged event
+    window.ethereum.on('networkChanged', function (accounts) {
+      loadBlockchainData();
+    });
+  }
   }, [])
 
 
@@ -25,33 +44,48 @@ function App() {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
       window.alert(
-        'Non-Ethereum browser detected.'
+        'no ethereum wallet detected.'
       );
     }
   };
 
   // load ethereum accounts, network, and smart contracts 
   const loadBlockchainData = async () => {
+    // initialize web3
     const web3 = window.web3;
 
+
+    // set current account to account[0] if unlocked in
+    //const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
-    setCurrentaccount(account);
-    console.log(Currentaccount);
+    if (account){
+      setCurrentaccount(account);
+    }else{
+      setCurrentaccount('connect eth account.');
+    }
 
+    // get networkId, display error if networkId != 1 (ethereum mainnet)
     const networkId = await web3.eth.net.getId();
+    if(networkId != 1){
+      setCurrentaccount('sowy wrong network');
+      setCurrentnetwork(networkId);
+    }
+
+    // get smart contracts
+
+
   }
 
 
   return (
-    <div>
+    <div className = 'App'>
+      {/* Display Navbar */}
+      <Navbar account = {Currentaccount}/>
 
-      <nav className = 'navbar navbar-dark bg-dark shadow mb-5'>
-      <p className = "navbar-Brand my-auto text-white"> Cryptonauts </p>
-      <ul className = "navbar-nav">
-        <li className = "nav-item text-white"> {Currentaccount} </li>
-      </ul>
-      </nav>
+      {/* Depending on page display Buy, Gallery, or About page */}
+
+
     </div>
 
   );
