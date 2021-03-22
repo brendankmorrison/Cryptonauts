@@ -11,6 +11,7 @@ import Navigation from './components/Navigation';
 import Home from './components/pages/Home';
 import Gallery from './components/pages/Gallery';
 import About from './components/pages/About';
+import Background from './components/Background';
 
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
@@ -36,6 +37,7 @@ function App() {
       loadBlockchainData();
     });
   }
+  console.log(navIsOpen);
   }, [])
 
 
@@ -78,6 +80,7 @@ function App() {
     }
     // get smart contracts
   }
+  
 
   const toggleNavHandler = () => {
     toggleNav(!navIsOpen);
@@ -87,26 +90,39 @@ function App() {
     toggleNav(false);
   }
 
+  const displayBackground = () => {
+    if (navIsOpen){
+      return(<Background click = {closeNav}/>)
+    }
+  }
 
+  const displayNavigation = () => {
+    if (navIsOpen){
+      return(<Navigation/>)
+    }
+  }
 
   return (
     <div className = 'App'>
       {/* Display Navbar */}
       <Router>
-        <Navbar account = {Currentaccount}/>
+        <Navbar account = {Currentaccount} click = {toggleNavHandler}/>
+        
+        {/* display background and navigation if navIsOpen is true */}
+        {displayBackground()}
+        
+        {displayNavigation()}
 
-
-        <Navigation/>
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>
           <Route exact path= "/">
-            <Home />
+            <Home onClick = {closeNav}/>
           </Route>
           <Route path="/gallery">
-            <Gallery />
+            <Gallery onClick = {closeNav}/>
           </Route>
           <Route path="/about">
-            <About />
+            <About onClick = {closeNav}/>
           </Route>
         </Switch>
       </Router>

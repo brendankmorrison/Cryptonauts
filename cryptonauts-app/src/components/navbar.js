@@ -26,7 +26,7 @@ function Navbar (props){
             <p className = "address my-auto"> {substringAddress()} </p>
 
             {/* nav icon */}
-            <p className = "nav-icon my-auto"><GiHamburgerMenu/></p>
+            <p className = "nav-icon my-auto" onClick = {props.click}><GiHamburgerMenu/></p>
       </nav>
     );
 }
