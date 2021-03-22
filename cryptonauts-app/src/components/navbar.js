@@ -3,6 +3,8 @@ import {
     Link
 } from "react-router-dom";
 
+import './Navbar.css'
+
 function Navbar (props){
 
     function substringAddress () {
@@ -20,10 +22,10 @@ function Navbar (props){
     return(
         <nav className = 'navbar navbar-dark bg-dark shadow mb-5'>
             {/* display navbar links */}
-            <p className = "navbar-Brand my-auto"><Link to = '/' style={{ color: '#FFF' }}> cryptonauts. </Link></p>
-            <a><Link to = '/' style={{ color: '#000' }}> home </Link></a>
-            <a><Link to = '/gallery' style={{ color: '#000' }}> gallery </Link></a>
-            <a><Link to = '/about' style={{ color: '#000' }}> about </Link></a>
+            <p className = "navbar-Brand my-auto"><Link className="link" to = '/'> CRYPTONAUTS </Link></p>
+            <Link className = "link" to = '/'> HOME </Link>
+            <Link className = "link" to = '/gallery'> GALLERY </Link>
+            <Link className = "link" to = '/about'> ABOUT </Link>
 
             {/* display user address */}
             <ul className = "navbar-nav">
