@@ -1,10 +1,10 @@
 import React ,{useEffect, useState} from 'react';
 
-function DisplayCryptonaut (props){
+function BuyCryptonaut (props){
 
     return(
         <div></div>
     );
 }
 
-export default DisplayCryptonaut;
+export default BuyCryptonaut;
