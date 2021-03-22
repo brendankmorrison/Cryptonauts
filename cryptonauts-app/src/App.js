@@ -1,12 +1,12 @@
 import React ,{useEffect, useState} from 'react';
 import Web3 from 'web3';
-import Navbar from './components/navbar'
-import './App.css'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import './App.css'
+import Navbar from './components/Navbar'
 import Home from './components/pages/Home'
 import Gallery from './components/pages/Gallery'
 import About from './components/pages/About'
@@ -14,19 +14,12 @@ import About from './components/pages/About'
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
-  //const ethereumButton = document.querySelector('.enableEthereumButton');
 
   useEffect(() => {
   const ethereumButton = document.querySelector('.enableEthereumButton');
 
   // initialize web3 on mount
   loadWeb3();
-
-
-  // connect metamask if button clicked
-  //ethereumButton.addEventListener('click', () => {
-    //loadBlockchainData();
-  //});
 
   // load blockchain data if metamask wallet is detected
   if (window.web3){
@@ -63,14 +56,15 @@ function App() {
     // initialize web3
     const web3 = window.web3;
 
-
-    // set current account to account[0] if unlocked in
-    //const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // fetch user eth account
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
+    // set current account to account[0] if unlocked
     if (account){
       setCurrentaccount(account);
-    }else{
+    }
+    // otherwise prompt to connect wallet
+    else{
       setCurrentaccount('connect eth account.');
     }
 
@@ -93,7 +87,7 @@ function App() {
       <Router>
         <Navbar account = {Currentaccount}/>
 
-        {/* Depending on page display Buy, Gallery, or About page */}
+        {/* Depending on url display Home, Gallery, or About page */}
         <Switch>
           <Route exact path= "/">
             <Home />
