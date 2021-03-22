@@ -1,0 +1,35 @@
+.navigation {
+    display: flex;
+    flex-direction: column;
+    background-color: #2E2E2E;
+    height: 250px;
+    width: 200px;
+    position: fixed;
+    right:0;
+    opacity: 0.8;
+    float: center;
+}
+
+.link{
+    color: #FFF;
+    text-align:center;
+}
+
+.link:hover{
+    text-decoration: none;
+    color: rgb(145, 87, 252);
+    font-weight: 3000;
+    transition:1s;
+}
+
+.externalLink{
+    color: #FFF;
+    padding:10px;
+}
+
+.externalLink:hover{
+    text-decoration: none;
+    color: rgb(81, 255, 75);
+    font-weight: 3000;
+    transition:1s;
+}

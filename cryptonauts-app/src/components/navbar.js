@@ -1,8 +1,6 @@
 import React ,{useEffect, useState} from 'react';
-import {
-    Link
-} from "react-router-dom";
-
+import {Link} from "react-router-dom";
+import {GiHamburgerMenu} from 'react-icons/gi';
 import './Navbar.css'
 
 function Navbar (props){
@@ -18,20 +16,17 @@ function Navbar (props){
         }
     }
 
-    // change inline style
     return(
-        <nav className = 'navbar navbar-dark bg-dark shadow mb-5'>
+        <nav className = 'navbar navbar-dark bg-dark shadow rounded'>
             {/* display navbar links */}
-            <p className = "navbar-Brand my-auto"><Link className="link" to = '/'> CRYPTONAUTS </Link></p>
-            <Link className = "link" to = '/'> HOME </Link>
-            <Link className = "link" to = '/gallery'> GALLERY </Link>
-            <Link className = "link" to = '/about'> ABOUT </Link>
+            <Link className = "navbar-Brand my-auto text-white" to = '/'> CRYPTONAUTS </Link>
 
+            <p className = 'spacer'/>
             {/* display user address */}
-            <ul className = "navbar-nav">
-                {/*<button class="enableEthereumButton">Enable Ethereum</button>*/}
-                <li className = "nav-item text-white"> {substringAddress()} </li>
-            </ul>
+            <p className = "address my-auto"> {substringAddress()} </p>
+
+            {/* nav icon */}
+            <p className = "nav-icon my-auto"><GiHamburgerMenu/></p>
       </nav>
     );
 }

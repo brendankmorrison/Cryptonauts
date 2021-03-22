@@ -5,15 +5,17 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import './App.css'
-import Navbar from './components/Navbar'
-import Home from './components/pages/Home'
-import Gallery from './components/pages/Gallery'
-import About from './components/pages/About'
+import './App.css';
+import Navbar from './components/Navbar';
+import Navigation from './components/Navigation';
+import Home from './components/pages/Home';
+import Gallery from './components/pages/Gallery';
+import About from './components/pages/About';
 
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
+  const[navIsOpen, toggleNav] = useState(false);
 
   useEffect(() => {
   const ethereumButton = document.querySelector('.enableEthereumButton');
@@ -74,11 +76,17 @@ function App() {
       setCurrentaccount('sowy wrong network');
       setCurrentnetwork(networkId);
     }
-
     // get smart contracts
-
-
   }
+
+  const toggleNavHandler = () => {
+    toggleNav(!navIsOpen);
+  }
+
+  const closeNav = () => {
+    toggleNav(false);
+  }
+
 
 
   return (
@@ -87,6 +95,8 @@ function App() {
       <Router>
         <Navbar account = {Currentaccount}/>
 
+
+        <Navigation/>
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>
           <Route exact path= "/">
