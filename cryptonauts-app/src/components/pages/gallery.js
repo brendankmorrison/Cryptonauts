@@ -4,7 +4,10 @@ import DisplayCryptonaut from '../DisplayCryptonaut';
 function Gallery (props){
 
     return(
-        <div>Gallery</div>
+        <div>Gallery
+            <DisplayCryptonaut/>
+        </div>
+
     );
 }
 
