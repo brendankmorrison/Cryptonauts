@@ -1,10 +1,10 @@
 import React ,{useEffect, useState} from 'react';
 
-function About (props){
+function Home (props){
 
     return(
-        <div>About</div>
+        <div>Home</div>
     );
 }
 
-export default About;
+export default Home;

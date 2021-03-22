@@ -1,6 +1,15 @@
 import React ,{useEffect, useState} from 'react';
 import Web3 from 'web3';
 import Navbar from './components/navbar'
+import './App.css'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Home from './components/pages/Home'
+import Gallery from './components/pages/Gallery'
+import About from './components/pages/About'
 
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
@@ -81,10 +90,22 @@ function App() {
   return (
     <div className = 'App'>
       {/* Display Navbar */}
-      <Navbar account = {Currentaccount}/>
+      <Router>
+        <Navbar account = {Currentaccount}/>
 
-      {/* Depending on page display Buy, Gallery, or About page */}
-
+        {/* Depending on page display Buy, Gallery, or About page */}
+        <Switch>
+          <Route exact path= "/">
+            <Home />
+          </Route>
+          <Route path="/gallery">
+            <Gallery />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+        </Switch>
+      </Router>
 
     </div>
 

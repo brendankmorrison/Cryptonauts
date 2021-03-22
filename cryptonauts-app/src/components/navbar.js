@@ -1,5 +1,8 @@
 import React ,{useEffect, useState} from 'react';
 import Button from './Button';
+import {
+    Link
+} from "react-router-dom";
 
 function Navbar (props){
 
@@ -15,10 +18,10 @@ function Navbar (props){
 
     return(
         <nav className = 'navbar navbar-dark bg-dark shadow mb-5'>
-            <p className = "navbar-Brand my-auto text-white"> Cryptonauts </p>
-            <button> Buy </button>
-            <button> Gallery </button>
-            <button> About </button>
+            <p className = "navbar-Brand my-auto text-white"><Link to = '/'> Cryptonauts </Link></p>
+                <button><Link to = '/'> Home </Link></button>
+                <button><Link to = '/gallery'> Gallery </Link></button>
+                <button><Link to = '/about'> About </Link></button>
             <ul className = "navbar-nav">
                 {/*<button class="enableEthereumButton">Enable Ethereum</button>*/}
                 <li className = "nav-item text-white"> {substringAddress()} </li>
