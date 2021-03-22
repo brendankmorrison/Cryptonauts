@@ -1,5 +1,5 @@
 *{
-    /*background-image: url("../public/background.png");*/
+    background-image: "../public/background.png";
     box-sizing: border-box;
     margin: 0;
     font-family: 'Orbitron', sans-serif;
