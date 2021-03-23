@@ -1,7 +1,9 @@
 import React ,{useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {GiHamburgerMenu} from 'react-icons/gi';
+import {AiOutlineClose} from 'react-icons/ai';
 import './Navbar.css'
+import {useTransition, animated} from 'react-spring'
 
 function Navbar (props){
 
@@ -16,6 +18,13 @@ function Navbar (props){
         }
     }
 
+    const transitions = useTransition(!props.navIsOpen, null, {
+        from: { position: 'absolute', opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+    })
+
+
     return(
         <nav className = 'navbar navbar-dark bg-dark shadow rounded'>
             {/* display navbar links */}
@@ -26,8 +35,12 @@ function Navbar (props){
             <p className = "address my-auto"> {substringAddress()} </p>
 
             {/* nav icon */}
-            <p className = "nav-icon my-auto" onClick = {props.click}><GiHamburgerMenu/></p>
-      </nav>
+            <p onClick = {props.click} className = 'nav-icon my-auto'>{transitions.map(({ item, key, props }) => 
+            item
+            ? <animated.div style={props}> <GiHamburgerMenu/> </animated.div>
+            : <animated.div style={props}> <AiOutlineClose/> </animated.div>
+            )}</p>
+        </nav>
     );
 }
 

@@ -9,9 +9,12 @@
     opacity: 0.8;
     float: center;
     position: absolute;
+    padding: 10px;
 }
 
 .link{
+    padding-top:5px;
+    height:30px;
     color: #FFF;
     text-align:center;
 }
@@ -21,6 +24,13 @@
     color: rgb(145, 87, 252);
     font-weight: 3000;
     transition:1s;
+    background-color:rgb(34, 34, 34);
+}
+
+.externalLinkWrapper{
+    height:30px;
+    color: #FFF;
+    text-align:center;
 }
 
 .externalLink{
@@ -30,7 +40,7 @@
 
 .externalLink:hover{
     text-decoration: none;
-    color: rgb(81, 255, 75);
+    color: rgb(145, 87, 252);
     font-weight: 3000;
     transition:1s;
 }

@@ -12,6 +12,7 @@ import Home from './components/pages/Home';
 import Gallery from './components/pages/Gallery';
 import About from './components/pages/About';
 import Background from './components/Background';
+import {useTransition, animated} from 'react-spring'
 
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
@@ -37,7 +38,6 @@ function App() {
       loadBlockchainData();
     });
   }
-  console.log(navIsOpen);
   }, [])
 
 
@@ -102,16 +102,28 @@ function App() {
     }
   }
 
+  const navTransition = useTransition(navIsOpen, null, {
+    from: { position: 'absolute', opacity: 0 , transform: 'translate3d(100%,0,0)' },
+    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
+    leave: { opacity: 0, transform: 'translate3d(100%,0,0)' },
+  })
+
   return (
     <div className = 'App'>
       {/* Display Navbar */}
       <Router>
-        <Navbar account = {Currentaccount} click = {toggleNavHandler}/>
+        <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>
         
         {/* display background and navigation if navIsOpen is true */}
         {displayBackground()}
-        
-        {displayNavigation()}
+
+        {/*displayNavigation()*/}
+        {console.log(navIsOpen)}
+        {navTransition.map(({ item, key, props }) => item && 
+        <animated.div key={key} style={props} className = 'animation'> 
+          <Background click = {closeNav}/>
+          <Navigation/> 
+        </animated.div>)}       
 
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>

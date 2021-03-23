@@ -8,13 +8,13 @@ function Navigation (props){
 
     return(
         <div className = 'navigation rounded'>
-            <div className = "link my-auto"> 
+            <div className = "externalLinkWrapper my-auto"> 
                 <a className = 'externalLink my-auto'> <RiTwitterLine size = {20}/> </a>
                 <a className = 'externalLink my-auto'> <RiDiscordLine size = {20}/> </a>
             </div>
-            <Link className = "link my-auto" to = '/'> HOME </Link>
-            <Link className = "link my-auto" to = '/gallery'> GALLERY </Link>
-            <Link className = "link my-auto" to = '/about'> ABOUT </Link>
+            <Link className = "link my-auto rounded" to = '/'> HOME </Link>
+            <Link className = "link my-auto rounded" to = '/gallery'> GALLERY </Link>
+            <Link className = "link my-auto rounded" to = '/about'> ABOUT </Link>
         
         </div>
     );

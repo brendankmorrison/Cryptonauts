@@ -18,3 +18,9 @@ nav{
 .navbar-Brand:hover{
     text-decoration:none;
 }
+
+.nav-icon{
+    height: 24px;
+    width: 12px;
+    text-align: center;
+}
