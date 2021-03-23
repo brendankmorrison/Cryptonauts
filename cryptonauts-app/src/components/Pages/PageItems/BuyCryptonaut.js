@@ -2,6 +2,7 @@ import React ,{useEffect, useState} from 'react';
 import './BuyCryptonaut.css';
 
 function BuyCryptonaut (props){
+    let id = 1;
 
     const handleBuyCryptonaut = () => {
         console.log('he bought');
@@ -10,7 +11,7 @@ function BuyCryptonaut (props){
 
     return(
         <div className = 'buy rounded-pill' onClick = {handleBuyCryptonaut}> 
-            BUY CRYPTONAUT
+            MINT CRYPTONAUT #{id}/1000
         </div>
     );
 }
