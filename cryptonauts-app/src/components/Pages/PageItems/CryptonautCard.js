@@ -1,6 +1,7 @@
 import React ,{useEffect, useState} from 'react';
+import './CryptonautCard.css'
 
-function DisplayCryptonaut(props){
+function CryptonautCard(props){
     
     const[pic, setPic] = useState({});
 
@@ -14,11 +15,11 @@ function DisplayCryptonaut(props){
     */
 
     return(
-        <div>
+        <div className = 'card'>
             <img src='https://gateway.pinata.cloud/ipfs/QmfUShAbxfXecoxySb9JiMH1Lb8URUw2Cse9Usj5vZmeej' alt="alternatetext"
-            width = '200' height = '300' className = 'rounded'></img>
+            width = '400' height = '400' className = 'image rounded'></img>
         </div>
     );
 }
 
-export default DisplayCryptonaut;
+export default CryptonautCard;

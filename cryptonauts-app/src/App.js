@@ -6,12 +6,12 @@ import {
   Route,
 } from "react-router-dom";
 import './App.css';
-import Navbar from './components/Navbar';
-import Navigation from './components/Navigation';
-import Home from './components/pages/Home';
-import Gallery from './components/pages/Gallery';
-import About from './components/pages/About';
-import Background from './components/Background';
+import Navbar from './components/Navigation/Navbar';
+import Navigation from './components/Navigation/Navigation';
+import Home from './components/Pages/Home';
+import Gallery from './components/Pages/Gallery';
+import About from './components/Pages/About';
+import Background from './components/Navigation/Background';
 import {useTransition, animated} from 'react-spring'
 
 function App() {
@@ -70,10 +70,6 @@ function App() {
     if (account){
       setCurrentaccount(account);
     }
-    // otherwise prompt to connect wallet
-    else{
-      setCurrentaccount('connect eth account.');
-    }
 
     // get networkId, display error if networkId != 1 (ethereum mainnet)
     const networkId = await web3.eth.net.getId();
@@ -115,21 +111,19 @@ function App() {
     <div className = 'App'>
       {/* Display Navbar */}
       <Router>
+
         <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>
-        
         {/* display background and navigation if navIsOpen is true */}
         {displayBackground()}
 
-        {/*displayNavigation()*/}
-        {console.log(navIsOpen)}
+        {/*displayNavigation()
         {navTransition.map(({ item, key, props }) => item && 
         <animated.div key={key} style={props} className = 'animation'> 
           <Background click = {closeNav}/>
           <Navigation/> 
-        </animated.div>)}       
+        </animated.div>)} */}   
 
         {/* Depending on url display Home, Gallery, or About page */}
-        {console.log(homeIsOpen, galleryIsOpen, aboutIsOpen)}
         <Switch>
           <Route exact path= "/">
             <Home onClick = {closeNav}/>
@@ -141,6 +135,13 @@ function App() {
             <About onClick = {closeNav}/>
           </Route>
         </Switch>
+        
+        {/*displayNavigation()*/} 
+        {navTransition.map(({ item, key, props }) => item && 
+        <animated.div key={key} style={props} className = 'animation'> 
+          <Background click = {closeNav}/>
+          <Navigation/> 
+        </animated.div>)}
       </Router>
 
     </div>

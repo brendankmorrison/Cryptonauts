@@ -1,10 +1,13 @@
 import React ,{useEffect, useState} from 'react';
-import DisplayCryptonaut from '../BuyCryptonaut';
+import BuyCryptonaut from './PageItems/BuyCryptonaut';
+import './Home.css';
 
 function Home (props){
 
     return(
-        <div>Home</div>
+        <div className = 'homeContainer'>
+            <BuyCryptonaut/>
+        </div>
     );
 }
 

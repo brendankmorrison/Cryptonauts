@@ -1,0 +1,28 @@
+.galleryContainer{
+    position: absolute;
+    float: center;
+    padding: 50px;
+    padding-bottom: 0px;
+    width: 100%;
+}
+
+.cardInfo{
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+}
+
+.nextImage{
+    border-style: solid;
+    position: relative;
+    width: 200px;
+    background-color:darkslategray;
+    text-align: center;
+    margin:0 auto;
+    padding: 10px;
+}
+
+.nextImage:hover{
+    border-color: white;
+    transition: 2s;
+}
