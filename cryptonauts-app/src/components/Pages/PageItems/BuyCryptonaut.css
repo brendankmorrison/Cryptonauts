@@ -9,6 +9,7 @@
 }
 
 .buy:hover{
-    border-color: white;
+    border-color: #FFF;
     transition: 2s;
+    color: #FFF;
 }
