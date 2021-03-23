@@ -18,6 +18,9 @@ function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
   const[navIsOpen, toggleNav] = useState(false);
+  const[homeIsOpen, toggleHomeState] = useState(true);
+  const[galleryIsOpen, toggleGalleryState] = useState(false);
+  const[aboutIsOpen, toggleAboutState] = useState(false);
 
   useEffect(() => {
   const ethereumButton = document.querySelector('.enableEthereumButton');
@@ -126,6 +129,7 @@ function App() {
         </animated.div>)}       
 
         {/* Depending on url display Home, Gallery, or About page */}
+        {console.log(homeIsOpen, galleryIsOpen, aboutIsOpen)}
         <Switch>
           <Route exact path= "/">
             <Home onClick = {closeNav}/>
