@@ -40,3 +40,19 @@
     width: 500px;
     margin-bottom: 5px;
 }
+
+.searchButton{
+    height: 28px;
+    margin-left: 5px;
+    background-color: darkslategrey;
+    border-style: solid;
+    width: 100px;
+    text-align: center;
+}
+
+.searchButton:hover{
+    color: #FFF;
+    border-color: #FFF;
+    transition: 1s;
+
+}

@@ -24,7 +24,8 @@
     color:darkslategray;
     font-weight: 3000;
     transition:1s;
-    background-color:rgb(34, 34, 34);
+    /*background-color:rgb(34, 34, 34);*/
+    background-color:#FFF;
 }
 
 .externalLinkWrapper{
