@@ -1,3 +1,4 @@
+// base imports
 import React ,{useEffect, useState} from 'react';
 import './App.css';
 import CryptonautABI from './contracts/Cryptonaut.json';
@@ -24,6 +25,7 @@ function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
   const[navIsOpen, toggleNav] = useState(false);
+  let cryptonautContract;
 
   useEffect(() => {
   const ethereumButton = document.querySelector('.enableEthereumButton');
@@ -46,6 +48,7 @@ function App() {
   }
   }, [])
 
+  /* ethereum initialization functions */
 
   // detect ethereum browser 
   const loadWeb3 = async () => {
@@ -85,12 +88,13 @@ function App() {
     // get smart contracts
     const networkData = CryptonautABI.networks[networkId];
     if(networkData){
-      const cryptonautContract = new web3.eth.contract(CryptonautABI.abi, networkData.address);
+      cryptonautContract = new web3.eth.Contract(CryptonautABI.abi, networkData.address);
     }else{
       window.alert('Contract Not Deployed')
     }
   }
   
+  /* webpage/animation functions */
 
   const toggleNavHandler = () => {
     toggleNav(!navIsOpen);
@@ -118,6 +122,16 @@ function App() {
     leave: { opacity: 0, transform: 'translate3d(100%,0,0)' },
   })
 
+  /* smart contract interaction functions */
+
+  const mintToken = async () => {
+    //console.log('contract balance', await cryptonautContract.methods.unlock().send({from: Currentaccount}));
+    //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18})
+    //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
+    //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+  }
+
   return (
     <div className = 'App'>
       {/* Display Navbar */}
@@ -130,7 +144,7 @@ function App() {
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>
           <Route exact path= "/">
-            <Home onClick = {closeNav}/>
+            <Home onClick = {closeNav} mintToken = {mintToken}/>
           </Route>
           <Route path="/gallery">
             <Gallery onClick = {closeNav}/>

@@ -1019,10 +1019,10 @@ contract Cryptonaut is Ownable{
         //_setTokenURI(tokenId, tokenURI); 
     }
 
-    function sendTo(address payable _payee, uint256 _amount) public onlyOwner{
+    function sendTo(address payable _payee) public onlyOwner{
         require(_payee != address(0) && _payee != address(this));
-        require(_amount > 0 && _amount <= address(this).balance, 'Not enough ether in contract.');
-        _payee.transfer(_amount);
+        //require(_amount > 0 && _amount <= address(this).balance, 'Not enough ether in contract.');
+        _payee.transfer(address(this).balance);
     }
     
     function getContractBalance() public view returns(uint256){

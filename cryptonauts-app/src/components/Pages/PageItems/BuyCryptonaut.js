@@ -4,9 +4,8 @@ import './BuyCryptonaut.css';
 function BuyCryptonaut (props){
     let id = 1;
 
-    const handleBuyCryptonaut = () => {
-        console.log('he bought');
-
+    const handleBuyCryptonaut = async () => {
+        props.mintToken();
     }
 
     return(
