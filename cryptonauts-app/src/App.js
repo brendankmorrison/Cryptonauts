@@ -1,26 +1,29 @@
 import React ,{useEffect, useState} from 'react';
+import './App.css';
+import CryptonautABI from './contracts/Cryptonaut.json';
+
+// import packages
 import Web3 from 'web3';
+import {useTransition, animated} from 'react-spring';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import './App.css';
+
+// import components
 import Navbar from './components/Navigation/Navbar';
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Pages/Home';
 import Gallery from './components/Pages/Gallery';
 import About from './components/Pages/About';
 import Background from './components/Navigation/Background';
-import {useTransition, animated} from 'react-spring'
+
 
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
   const[navIsOpen, toggleNav] = useState(false);
-  const[homeIsOpen, toggleHomeState] = useState(true);
-  const[galleryIsOpen, toggleGalleryState] = useState(false);
-  const[aboutIsOpen, toggleAboutState] = useState(false);
 
   useEffect(() => {
   const ethereumButton = document.querySelector('.enableEthereumButton');
@@ -72,12 +75,20 @@ function App() {
     }
 
     // get networkId, display error if networkId != 1 (ethereum mainnet)
+    // 1337 local host
     const networkId = await web3.eth.net.getId();
-    if(networkId != 1){
+    if(networkId != 5777){
       setCurrentaccount('sowy wrong network');
       setCurrentnetwork(networkId);
     }
+
     // get smart contracts
+    const networkData = CryptonautABI.networks[networkId];
+    if(networkData){
+      const cryptonautContract = new web3.eth.contract(CryptonautABI.abi, networkData.address);
+    }else{
+      window.alert('Contract Not Deployed')
+    }
   }
   
 
@@ -114,14 +125,7 @@ function App() {
 
         <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>
         {/* display background and navigation if navIsOpen is true */}
-        {displayBackground()}
-
-        {/*displayNavigation()
-        {navTransition.map(({ item, key, props }) => item && 
-        <animated.div key={key} style={props} className = 'animation'> 
-          <Background click = {closeNav}/>
-          <Navigation/> 
-        </animated.div>)} */}   
+        {displayBackground()} 
 
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>

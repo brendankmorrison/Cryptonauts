@@ -79,6 +79,8 @@ module.exports = {
     // timeout: 100000
   },
 
+  contracts_build_directory: "./cryptonauts-app/src/contracts",
+
   // Configure your compilers
   compilers: {
     solc: {

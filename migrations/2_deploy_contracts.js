@@ -1,5 +1,5 @@
-const cryptonauts = artifacts.require("cryptonauts");
+const Cryptonaut = artifacts.require("Cryptonaut");
 
 module.exports = function (deployer) {
-  deployer.deploy(cryptonauts);
+  deployer.deploy(Cryptonaut);
 };
