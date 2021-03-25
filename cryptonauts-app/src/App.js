@@ -25,27 +25,30 @@ function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
   const[navIsOpen, toggleNav] = useState(false);
-  let cryptonautContract;
+  let cryptonautContract = 'default';
+  //let tokenId;
 
-  useEffect(() => {
-  const ethereumButton = document.querySelector('.enableEthereumButton');
-
+  useEffect(async () => {
+  console.log('useEffect ran')
   // initialize web3 on mount
-  loadWeb3();
+  await loadWeb3();
 
-  // load blockchain data if metamask wallet is detected
+  // load blockchainData if metamask wallet is detected
   if (window.web3){
-    loadBlockchainData();
-    // reload blockchainData on metamask accountsChanged event
-    window.ethereum.on('accountsChanged', function (accounts) {
-      loadBlockchainData();
-    });
-
-    // reload blockchainData on metamask networkChanged event
-    window.ethereum.on('networkChanged', function (accounts) {
-      loadBlockchainData();
-    });
+    await loadBlockchainData();
   }
+
+  // reload blockchainData on metamask accountsChanged event
+  window.ethereum.on('accountsChanged', function (accounts) {
+    loadBlockchainData(); 
+  });
+
+  // reload blockchainData on metamask networkChanged event
+  window.ethereum.on('networkChanged', function (accounts) {
+    loadBlockchainData();
+  });
+
+  return () => console.log('unmounting...');
   }, [])
 
   /* ethereum initialization functions */
@@ -88,7 +91,8 @@ function App() {
     // get smart contracts
     const networkData = CryptonautABI.networks[networkId];
     if(networkData){
-      cryptonautContract = new web3.eth.Contract(CryptonautABI.abi, networkData.address);
+      cryptonautContract = await new web3.eth.Contract(CryptonautABI.abi, networkData.address);
+      console.log(cryptonautContract);
     }else{
       window.alert('Contract Not Deployed')
     }
@@ -125,18 +129,30 @@ function App() {
   /* smart contract interaction functions */
 
   const mintToken = async () => {
-    //console.log('contract balance', await cryptonautContract.methods.unlock().send({from: Currentaccount}));
-    //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18})
+    console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
     //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+    //fetch(await cryptonautContract.methods.tokenURI(1).call())
+      //.then(response => response.json())
+      //.then(data => console.log(data));
+    //tokenId = await cryptonautContract.methods.getNextTokenId().call();
+    //console.log(tokenId);
+    console.log(cryptonautContract);
+  }
+
+  const displayToken = async () => {
+
+  }
+
+  const displayRandomToken = async () => {
+    
   }
 
   return (
     <div className = 'App'>
       {/* Display Navbar */}
       <Router>
-
         <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>
         {/* display background and navigation if navIsOpen is true */}
         {displayBackground()} 
@@ -147,7 +163,7 @@ function App() {
             <Home onClick = {closeNav} mintToken = {mintToken}/>
           </Route>
           <Route path="/gallery">
-            <Gallery onClick = {closeNav}/>
+            <Gallery onClick = {closeNav} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>
           </Route>
           <Route path="/about">
             <About onClick = {closeNav}/>

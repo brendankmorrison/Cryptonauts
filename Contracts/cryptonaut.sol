@@ -587,7 +587,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * in child contracts.
      */
     function _baseURI() internal view virtual returns (string memory) {
-        return "";
+        return "https://gateway.pinata.cloud/ipfs/";
     }
 
     /**
@@ -995,8 +995,8 @@ pragma solidity ^0.8.0;
 contract Cryptonaut is Ownable{
     uint256 public hardCap;
     uint256 public currentPrice;
-    string public ipfsHash;
     bool public locked;
+    uint256 tokenId;
     
     constructor() 
 
@@ -1004,19 +1004,19 @@ contract Cryptonaut is Ownable{
     {
         hardCap = 1000;
         currentPrice = 1 * (10 ** 18); // 1 ether
-        locked = true;
+        locked = false;
+        tokenId = 1;
     }
 
-    function buyCryptonaut(uint256 tokenId) public payable {
+    function buyCryptonaut() public payable { //string memory tokenHash
         require(!locked, 'Buying Cryptonauts is locked.');
         require(msg.sender != address(0) && msg.sender != address(this));
         require(msg.value >= currentPrice, 'Not enough ether.');
         require(!_exists(tokenId), 'Token already minted.');
         require(tokenId <= hardCap, 'Sale has ended.');
-
         _safeMint(msg.sender, tokenId);
-
-        //_setTokenURI(tokenId, tokenURI); 
+        //_setTokenURI(tokenId, tokenHash); 
+        tokenId = tokenId + 1; 
     }
 
     function sendTo(address payable _payee) public onlyOwner{
@@ -1035,6 +1035,10 @@ contract Cryptonaut is Ownable{
     
     function getCurrentPrice() public view returns(uint256){
         return(currentPrice);
+    }
+
+    function getNextTokenId() public view returns(uint256){
+        return(tokenId);
     }
 
     function unlock() public onlyOwner {
