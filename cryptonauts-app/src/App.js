@@ -24,12 +24,13 @@ import Background from './components/Navigation/Background';
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
+  const[cryptonautContract, setCryptonautContract] = useState();
+  const[nextTokenId, setNextTokenId] = useState();
   const[navIsOpen, toggleNav] = useState(false);
-  let cryptonautContract = 'default';
-  //let tokenId;
 
   useEffect(async () => {
-  console.log('useEffect ran')
+  let isMounted = true;
+
   // initialize web3 on mount
   await loadWeb3();
 
@@ -47,8 +48,15 @@ function App() {
   window.ethereum.on('networkChanged', function (accounts) {
     loadBlockchainData();
   });
+  
+  if(typeof cryptonautContract != "undefined"){
+    setTokenId();
+  }
 
-  return () => console.log('unmounting...');
+  return () => {
+    isMounted = false;
+  }
+
   }, [])
 
   /* ethereum initialization functions */
@@ -91,8 +99,7 @@ function App() {
     // get smart contracts
     const networkData = CryptonautABI.networks[networkId];
     if(networkData){
-      cryptonautContract = await new web3.eth.Contract(CryptonautABI.abi, networkData.address);
-      console.log(cryptonautContract);
+      setCryptonautContract(await new web3.eth.Contract(CryptonautABI.abi, networkData.address));
     }else{
       window.alert('Contract Not Deployed')
     }
@@ -127,25 +134,29 @@ function App() {
   })
 
   /* smart contract interaction functions */
+  const setTokenId = async () => {
+    setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
+  }
 
   const mintToken = async () => {
-    console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
-    //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    //fetch(await cryptonautContract.methods.tokenURI(1).call())
-      //.then(response => response.json())
-      //.then(data => console.log(data));
-    //tokenId = await cryptonautContract.methods.getNextTokenId().call();
-    //console.log(tokenId);
-    console.log(cryptonautContract);
+    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
+    await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
+    console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+    setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
 
   const displayToken = async () => {
+    //fetch(await cryptonautContract.methods.tokenURI(1).call())
+      //.then(response => response.json())
+      //.then(data => console.log(data));
 
   }
 
   const displayRandomToken = async () => {
+    //fetch(await cryptonautContract.methods.tokenURI(1).call())
+      //.then(response => response.json())
+      //.then(data => console.log(data));
     
   }
 
@@ -160,7 +171,7 @@ function App() {
         {/* Depending on url display Home, Gallery, or About page */}
         <Switch>
           <Route exact path= "/">
-            <Home onClick = {closeNav} mintToken = {mintToken}/>
+            <Home onClick = {closeNav} mintToken = {mintToken} nextTokenId = {nextTokenId}/>
           </Route>
           <Route path="/gallery">
             <Gallery onClick = {closeNav} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>

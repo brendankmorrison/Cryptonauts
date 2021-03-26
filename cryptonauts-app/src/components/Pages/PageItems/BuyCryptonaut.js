@@ -1,4 +1,4 @@
-import React ,{useEffect, useState} from 'react';
+import React from 'react';
 import './BuyCryptonaut.css';
 
 function BuyCryptonaut (props){
@@ -8,7 +8,7 @@ function BuyCryptonaut (props){
 
     return(
         <div className = 'buy rounded-pill' onClick = {handleBuyCryptonaut}> 
-            MINT CRYPTONAUT #/1000
+            MINT CRYPTONAUT #{props.nextTokenId}/1000
         </div>
     );
 }
