@@ -134,6 +134,7 @@ function App() {
   })
 
   /* smart contract interaction functions */
+  
   const setTokenId = async () => {
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
@@ -144,6 +145,10 @@ function App() {
     //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
+  }
+
+  const searchAddress = async () => {
+
   }
 
   const displayToken = async () => {
@@ -164,11 +169,13 @@ function App() {
     <div className = 'App'>
       {/* Display Navbar */}
       <Router>
+        {/* display navbar */}
         <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>
+
         {/* display background and navigation if navIsOpen is true */}
         {displayBackground()} 
 
-        {/* Depending on url display Home, Gallery, or About page */}
+        {/* depending on url display home, gallery, or about page */}
         <Switch>
           <Route exact path= "/">
             <Home onClick = {closeNav} mintToken = {mintToken} nextTokenId = {nextTokenId}/>
@@ -187,6 +194,7 @@ function App() {
           <Background click = {closeNav}/>
           <Navigation/> 
         </animated.div>)}
+
       </Router>
 
     </div>

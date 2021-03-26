@@ -28,6 +28,7 @@
     border-color: #FFF;
     color: #FFF;
     transition: 2s;
+    cursor: pointer;
 }
 
 .inputContainer{
@@ -54,5 +55,5 @@
     color: #FFF;
     border-color: #FFF;
     transition: 1s;
-
+    cursor: pointer;
 }

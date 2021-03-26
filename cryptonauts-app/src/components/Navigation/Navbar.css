@@ -24,3 +24,7 @@ nav{
     width: 12px;
     text-align: center;
 }
+
+.nav-icon:hover{
+    cursor: pointer;
+}
