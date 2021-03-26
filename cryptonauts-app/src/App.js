@@ -20,7 +20,6 @@ import Gallery from './components/Pages/Gallery';
 import About from './components/Pages/About';
 import Background from './components/Navigation/Background';
 
-
 function App() {
   const[Currentaccount, setCurrentaccount] = useState("connect eth account.");
   const[Currentnetwork, setCurrentnetwork] = useState(0);
@@ -28,36 +27,26 @@ function App() {
   const[nextTokenId, setNextTokenId] = useState();
   const[navIsOpen, toggleNav] = useState(false);
 
-  useEffect(async () => {
-  let isMounted = true;
+  useEffect(() => {
+    // initialize web3 on mount
+    loadWeb3();
 
-  // initialize web3 on mount
-  await loadWeb3();
 
-  // load blockchainData if metamask wallet is detected
-  if (window.web3){
-    await loadBlockchainData();
-  }
+    // load blockchainData if metamask wallet is detected
+    if (window.web3){
+      loadBlockchainData();
+    }
 
-  // reload blockchainData on metamask accountsChanged event
-  window.ethereum.on('accountsChanged', function (accounts) {
-    loadBlockchainData(); 
-  });
+    // reload blockchainData on metamask accountsChanged event
+    window.ethereum.on('accountsChanged', function (accounts) {
+      loadBlockchainData(); 
+    });
 
-  // reload blockchainData on metamask networkChanged event
-  window.ethereum.on('networkChanged', function (accounts) {
-    loadBlockchainData();
-  });
-  
-  if(typeof cryptonautContract != "undefined"){
-    setTokenId();
-  }
-
-  return () => {
-    isMounted = false;
-  }
-
-  }, [cryptonautContract]);
+    // reload blockchainData on metamask networkChanged event
+    window.ethereum.on('networkChanged', function (accounts) {
+      loadBlockchainData();
+    });
+  }, []);
 
   /* ethereum initialization functions */
 
@@ -100,6 +89,10 @@ function App() {
     const networkData = CryptonautABI.networks[networkId];
     if(networkData){
       setCryptonautContract(await new web3.eth.Contract(CryptonautABI.abi, networkData.address));
+
+      /* do not know why i need to do this */
+      let contract = await new web3.eth.Contract(CryptonautABI.abi, networkData.address);
+      setNextTokenId(await contract.methods.getNextTokenId().call());
     }else{
       window.alert('Contract Not Deployed')
     }
@@ -121,12 +114,6 @@ function App() {
     }
   }
 
-  const displayNavigation = () => {
-    if (navIsOpen){
-      return(<Navigation/>)
-    }
-  }
-
   const navTransition = useTransition(navIsOpen, null, {
     from: { position: 'absolute', opacity: 0 , transform: 'translate3d(100%,0,0)' },
     enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
@@ -134,15 +121,11 @@ function App() {
   })
 
   /* smart contract interaction functions */
-  
-  const setTokenId = async () => {
-    setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
-  }
 
   const mintToken = async () => {
     //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
-    //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
+    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
+    await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
@@ -167,7 +150,6 @@ function App() {
 
   return (
     <div className = 'App'>
-      {/* Display Navbar */}
       <Router>
         {/* display navbar */}
         <Navbar account = {Currentaccount} click = {toggleNavHandler} navIsOpen = {navIsOpen}/>

@@ -35,11 +35,11 @@ function Navbar (props){
             <p className = "address my-auto"> {substringAddress()} </p>
 
             {/* nav icon */}
-            <p onClick = {props.click} className = 'nav-icon my-auto'>{transitions.map(({ item, key, props }) => 
+            <div onClick = {props.click} className = 'nav-icon my-auto'>{transitions.map(({ item, key, props }) => 
             item
             ? <animated.div style={props}> <GiHamburgerMenu/> </animated.div>
             : <animated.div style={props}> <AiOutlineClose/> </animated.div>
-            )}</p>
+            )}</div>
         </nav>
     );
 }

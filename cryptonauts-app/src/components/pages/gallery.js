@@ -8,7 +8,6 @@ function Gallery (props){
 
     useEffect(() => {
 
-
     }, [])
 
     return(
