@@ -1008,14 +1008,14 @@ contract Cryptonaut is Ownable{
         tokenId = 1;
     }
 
-    function buyCryptonaut() public payable { //string memory tokenHash
+    function buyCryptonaut(string memory tokenHash) public payable {
         require(!locked, 'Buying Cryptonauts is locked.');
         require(msg.sender != address(0) && msg.sender != address(this));
         require(msg.value >= currentPrice, 'Not enough ether.');
         require(!_exists(tokenId), 'Token already minted.');
         require(tokenId <= hardCap, 'Sale has ended.');
         _safeMint(msg.sender, tokenId);
-        //_setTokenURI(tokenId, tokenHash); 
+        _setTokenURI(tokenId, tokenHash); 
         tokenId = tokenId + 1; 
     }
 

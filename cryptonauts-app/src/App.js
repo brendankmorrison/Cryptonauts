@@ -123,29 +123,38 @@ function App() {
   /* smart contract interaction functions */
 
   const mintToken = async () => {
-    //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
-    await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
+    // get next metadata hash
+
+    // call buyCryptonaut function
+    await cryptonautContract.methods.buyCryptonaut('QmfUShAbxfXecoxySb9JiMH1Lb8URUw2Cse9Usj5vZmeej').send({from: Currentaccount, value: 10**18});
+    //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
+
+    // if transaction went through mark metadata hash as used
+
+    // update next token id
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
 
   const searchAddress = async () => {
-
+    // 
+    let num = await cryptonautContract.methods.tokenURI(1).call();
+    return(num);
   }
 
-  const displayToken = async () => {
+  const displayToken = async (tokenId) => {
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
-
+      return(await tokenId);
   }
 
   const displayRandomToken = async () => {
+    let num = await cryptonautContract.methods.tokenURI(1).call();
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
-    
+    return(num.toString());
   }
 
   return (
@@ -163,7 +172,7 @@ function App() {
             <Home onClick = {closeNav} mintToken = {mintToken} nextTokenId = {nextTokenId}/>
           </Route>
           <Route path="/gallery">
-            <Gallery onClick = {closeNav} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>
+            <Gallery onClick = {closeNav} searchAddress = {searchAddress} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>
           </Route>
           <Route path="/about">
             <About onClick = {closeNav}/>
