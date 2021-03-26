@@ -57,7 +57,7 @@ function App() {
     isMounted = false;
   }
 
-  }, [])
+  }, [cryptonautContract]);
 
   /* ethereum initialization functions */
 
@@ -140,8 +140,8 @@ function App() {
 
   const mintToken = async () => {
     //console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
-    //await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
-    await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
+    await cryptonautContract.methods.buyCryptonaut().send({from: Currentaccount, value: 10**18});
+    //await cryptonautContract.methods.sendTo(Currentaccount).send({from: Currentaccount});
     console.log('contract balance', await cryptonautContract.methods.getContractBalance().call());
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
