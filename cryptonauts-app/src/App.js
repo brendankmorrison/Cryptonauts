@@ -17,6 +17,7 @@ import Navbar from './components/Navigation/Navbar';
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Pages/Home';
 import Gallery from './components/Pages/Gallery';
+import Wallet from './components/Pages/Wallet';
 import About from './components/Pages/About';
 import Background from './components/Navigation/Background';
 
@@ -136,10 +137,20 @@ function App() {
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
 
-  const searchAddress = async () => {
-    // 
-    let num = await cryptonautContract.methods.tokenURI(1).call();
-    return(num);
+  const searchAddress = async (address) => {
+    let balance = 0;
+    if(window.web3.utils.isAddress(address)){
+      balance = await cryptonautContract.methods.balanceOf(address).call();
+    }
+    if(balance >= 1){
+      console.log(await cryptonautContract.methods.tokensOfOwner(address).call());
+
+    } else {
+      alert('This address does not own any cryptonauts.');
+    }
+
+    //let num = await cryptonautContract.methods.tokenURI(1).call();
+    //return(num);
   }
 
   const displayToken = async (tokenId) => {
@@ -173,6 +184,9 @@ function App() {
           </Route>
           <Route path="/gallery">
             <Gallery onClick = {closeNav} searchAddress = {searchAddress} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>
+          </Route>
+          <Route path="/wallet">
+            <Wallet onClick = {closeNav} displayToken = {displayToken} searchAddress = {searchAddress}/>
           </Route>
           <Route path="/about">
             <About onClick = {closeNav}/>

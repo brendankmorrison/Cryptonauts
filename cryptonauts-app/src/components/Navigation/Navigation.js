@@ -14,6 +14,7 @@ function Navigation (props){
             </div>
             <Link className = "link my-auto rounded" to = '/'> HOME </Link>
             <Link className = "link my-auto rounded" to = '/gallery'> GALLERY </Link>
+            <Link className = "link my-auto rounded" to = '/wallet'> WALLET </Link>
             <Link className = "link my-auto rounded" to = '/about'> ABOUT </Link>
         
         </div>
