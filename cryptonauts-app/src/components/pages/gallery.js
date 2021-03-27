@@ -7,10 +7,13 @@ function Gallery (props){
     const [image, setImage] = useState('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV')
 
     useEffect(() => {
+        handleNextImage();
 
     }, [])
 
-    const handleNextImage = () => {
+    const handleNextImage = async () => {
+        let token = await props.getRandomToken();
+        console.log(token);
 
     }
 

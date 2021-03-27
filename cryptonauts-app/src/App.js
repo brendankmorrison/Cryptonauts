@@ -32,7 +32,6 @@ function App() {
     // initialize web3 on mount
     loadWeb3();
 
-
     // load blockchainData if metamask wallet is detected
     if (window.web3){
       loadBlockchainData();
@@ -89,6 +88,7 @@ function App() {
     // get smart contracts
     const networkData = CryptonautABI.networks[networkId];
     if(networkData){
+      
       setCryptonautContract(await new web3.eth.Contract(CryptonautABI.abi, networkData.address));
 
       /* do not know why i need to do this */
@@ -137,35 +137,36 @@ function App() {
     setNextTokenId(await cryptonautContract.methods.getNextTokenId().call());
   }
 
-  const searchAddress = async (address) => {
+  const searchAddress = async () => {
+    let tokens = 'none';
     let balance = 0;
-    if(window.web3.utils.isAddress(address)){
-      balance = await cryptonautContract.methods.balanceOf(address).call();
-    }
+    balance = await cryptonautContract.methods.balanceOf(Currentaccount).call();
     if(balance >= 1){
-      console.log(await cryptonautContract.methods.tokensOfOwner(address).call());
-
+      tokens = await cryptonautContract.methods.tokensOfOwner(Currentaccount).call();
     } else {
       alert('This address does not own any cryptonauts.');
     }
 
-    //let num = await cryptonautContract.methods.tokenURI(1).call();
-    //return(num);
+    return(tokens);
   }
 
-  const displayToken = async (tokenId) => {
+  const getToken = async (tokenId) => {
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
       return(await tokenId);
   }
 
-  const displayRandomToken = async () => {
-    let num = await cryptonautContract.methods.tokenURI(1).call();
+  const getRandomToken = async () => {
+    //let num = await cryptonautContract.methods.tokenURI(1).call();
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
-    return(num.toString());
+    
+    let numMinted = nextTokenId - 1;
+
+    let tokenId = Math.floor((Math.random() * numMinted) + 1);
+    return(tokenId);
   }
 
   return (
@@ -183,10 +184,10 @@ function App() {
             <Home onClick = {closeNav} mintToken = {mintToken} nextTokenId = {nextTokenId}/>
           </Route>
           <Route path="/gallery">
-            <Gallery onClick = {closeNav} searchAddress = {searchAddress} displayToken = {displayToken} displayRandomToken = {displayRandomToken}/>
+            <Gallery onClick = {closeNav} getRandomToken = {getRandomToken}/>
           </Route>
           <Route path="/wallet">
-            <Wallet onClick = {closeNav} displayToken = {displayToken} searchAddress = {searchAddress}/>
+            <Wallet onClick = {closeNav} getToken = {getToken} searchAddress = {searchAddress}/>
           </Route>
           <Route path="/about">
             <About onClick = {closeNav}/>
