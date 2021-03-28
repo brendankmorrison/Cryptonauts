@@ -28,22 +28,23 @@ function App() {
   const[nextTokenId, setNextTokenId] = useState();
   const[navIsOpen, toggleNav] = useState(false);
 
-  useEffect(() => {
+  useEffect(async () => {
+    console.log('useeffect');
     // initialize web3 on mount
-    loadWeb3();
+    await loadWeb3();
 
     // load blockchainData if metamask wallet is detected
     if (window.web3){
-      loadBlockchainData();
+      await loadBlockchainData();
     }
 
     // reload blockchainData on metamask accountsChanged event
-    window.ethereum.on('accountsChanged', function (accounts) {
+    await window.ethereum.on('accountsChanged', function (accounts) {
       loadBlockchainData(); 
     });
 
     // reload blockchainData on metamask networkChanged event
-    window.ethereum.on('networkChanged', function (accounts) {
+    await window.ethereum.on('networkChanged', function (accounts) {
       loadBlockchainData();
     });
   }, []);
@@ -138,7 +139,7 @@ function App() {
   }
 
   const searchAddress = async () => {
-    let tokens = 'none';
+    let tokens = [];
     let balance = 0;
     balance = await cryptonautContract.methods.balanceOf(Currentaccount).call();
     if(balance >= 1){
@@ -146,7 +147,6 @@ function App() {
     } else {
       alert('This address does not own any cryptonauts.');
     }
-
     return(tokens);
   }
 
@@ -154,19 +154,12 @@ function App() {
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
-      return(await tokenId);
+    return(await cryptonautContract.methods.tokenURI(1).call());
+    
   }
 
-  const getRandomToken = async () => {
-    //let num = await cryptonautContract.methods.tokenURI(1).call();
-    //fetch(await cryptonautContract.methods.tokenURI(1).call())
-      //.then(response => response.json())
-      //.then(data => console.log(data));
-    
-    let numMinted = nextTokenId - 1;
-
-    let tokenId = Math.floor((Math.random() * numMinted) + 1);
-    return(tokenId);
+  const getOwner = async (tokenId) => {
+    return(await cryptonautContract.methods.ownerOf(tokenId).call());
   }
 
   return (
@@ -184,7 +177,7 @@ function App() {
             <Home onClick = {closeNav} mintToken = {mintToken} nextTokenId = {nextTokenId}/>
           </Route>
           <Route path="/gallery">
-            <Gallery onClick = {closeNav} getRandomToken = {getRandomToken}/>
+            <Gallery onClick = {closeNav} nextTokenId = {nextTokenId} getToken = {getToken} getOwner = {getOwner}/>
           </Route>
           <Route path="/wallet">
             <Wallet onClick = {closeNav} getToken = {getToken} searchAddress = {searchAddress}/>

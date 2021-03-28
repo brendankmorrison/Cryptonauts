@@ -3,26 +3,30 @@ import CryptonautCard from './PageItems/CryptonautCard';
 import './Wallet.css';
 
 function Wallet (props){
-    const [image, setImage] = useState('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV')
+    const [images, setImages] = useState([]);
 
-    useEffect(() => {
-        handleSearch();
-
+    useEffect(async () => {
+        setImages(await handleSearch());
     }, [])
 
     const handleSearch = async () => {
-        let tokens = await props.searchAddress();
-        console.log(tokens)
+        let tokenList = await props.searchAddress();
+
+        let tokenImages= []; 
+        for(let token = 0; token < tokenList.length; token ++){
+            tokenImages.push('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV');
+        }
+        return tokenImages;
     }
 
     return(
         <div className = 'walletContainer'>
-            <div className = 'inputContainer'>
-                <input id = 'userInput' className = 'searchAddress' placeholder = 'SEARCH ADDRESS' type = 'search'/>
-                <div className = 'searchButton rounded-pill'> SEARCH</div>
-                
+            <div className = 'title'> YOUR CRYPTONAUTS </div>
+
+            {/*displayCryptonauts()*/}
+            <div>
+                {images.map(image => <CryptonautCard image = {image}/>)}
             </div>
-            <CryptonautCard image = {image}/>
         </div>
 
     );

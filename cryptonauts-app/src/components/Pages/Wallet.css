@@ -1,59 +1,6 @@
 .walletContainer{
     position: absolute;
     float: center;
-    padding-top: 20px;
     padding-bottom: 0px;
     width: 100%;
-}
-
-.cardInfo{
-    width: 100%;
-    text-align: center;
-    color: #FFF;
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
-
-.nextImage{
-    border-style: solid;
-    position: relative;
-    width: 200px;
-    background-color:darkslategray;
-    text-align: center;
-    margin:0 auto;
-    padding: 10px;
-}
-
-.nextImage:hover{
-    border-color: #FFF;
-    color: #FFF;
-    transition: 2s;
-    cursor: pointer;
-}
-
-.inputContainer{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.searchAddress{
-    width: 500px;
-    margin-bottom: 5px;
-}
-
-.searchButton{
-    height: 28px;
-    margin-left: 5px;
-    background-color: darkslategrey;
-    border-style: solid;
-    width: 100px;
-    text-align: center;
-}
-
-.searchButton:hover{
-    color: #FFF;
-    border-color: #FFF;
-    transition: 1s;
-    cursor: pointer;
 }
