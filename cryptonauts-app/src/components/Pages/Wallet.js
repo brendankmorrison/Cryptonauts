@@ -11,11 +11,16 @@ function Wallet (props){
 
     const handleSearch = async () => {
         let tokenList = await props.searchAddress();
-
         let tokenImages= []; 
-        for(let token = 0; token < tokenList.length; token ++){
-            tokenImages.push('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV');
+        if(tokenList.length == 0){
+            // set token images to no cryptonauts image
+            alert('no cwyptonauts');
         }
+        else {
+            for(let token = 0; token < tokenList.length; token ++){
+                tokenImages.push('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV');
+            }
+        }   
         return tokenImages;
     }
 
@@ -24,7 +29,7 @@ function Wallet (props){
             <div className = 'title'> YOUR CRYPTONAUTS </div>
 
             {/*displayCryptonauts()*/}
-            <div>
+            <div className = 'cards'>
                 {images.map(image => <CryptonautCard image = {image}/>)}
             </div>
         </div>

@@ -27,8 +27,10 @@ function App() {
   const[cryptonautContract, setCryptonautContract] = useState();
   const[nextTokenId, setNextTokenId] = useState();
   const[navIsOpen, toggleNav] = useState(false);
+  const[isLoading, setLoading] = useState(false);
 
   useEffect(async () => {
+
     console.log('useeffect');
     // initialize web3 on mount
     await loadWeb3();
@@ -47,6 +49,9 @@ function App() {
     await window.ethereum.on('networkChanged', function (accounts) {
       loadBlockchainData();
     });
+    console.log('end of useeffect');
+
+    setLoading(false);
   }, []);
 
   /* ethereum initialization functions */
@@ -98,6 +103,7 @@ function App() {
     }else{
       window.alert('Contract Not Deployed')
     }
+    console.log('loadbcdata');
   }
   
   /* webpage/animation functions */
@@ -145,7 +151,7 @@ function App() {
     if(balance >= 1){
       tokens = await cryptonautContract.methods.tokensOfOwner(Currentaccount).call();
     } else {
-      alert('This address does not own any cryptonauts.');
+      //alert('This address does not own any cryptonauts.');
     }
     return(tokens);
   }
@@ -154,6 +160,7 @@ function App() {
     //fetch(await cryptonautContract.methods.tokenURI(1).call())
       //.then(response => response.json())
       //.then(data => console.log(data));
+    console.log('getToken');
     return(await cryptonautContract.methods.tokenURI(1).call());
     
   }

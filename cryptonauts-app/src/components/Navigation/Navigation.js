@@ -10,7 +10,7 @@ function Navigation (props){
         <div className = 'navigation rounded'>
             <div className = "externalLinkWrapper my-auto"> 
                 <a className = 'externalLink my-auto' href = 'https://twitter.com/CryptonautsNFT' target="_blank"> <RiTwitterLine size = {20}/> </a>
-                <a className = 'externalLink my-auto'> <RiDiscordLine size = {20}/> </a>
+                <a className = 'externalLink my-auto' href = 'https://discord.gg/pJxyuzB5wc' target = "_blank"> <RiDiscordLine size = {20}/> </a>
             </div>
             <Link className = "link my-auto rounded" to = '/'> HOME </Link>
             <Link className = "link my-auto rounded" to = '/gallery'> GALLERY </Link>

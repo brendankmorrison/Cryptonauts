@@ -6,7 +6,7 @@ function Gallery (props){
     // showRandom cryptonaut state or searchAddress state
     const [image, setImage] = useState('https://gateway.pinata.cloud/ipfs/Qmby6oC9L3nKYCdjySkZrrPSmsx4BtpQXUoQ4MUBKXWnMV')
     const [owner, setOwner] = useState('')
-    useEffect(() => {
+    useEffect(async () => {
         handleNextImage();
 
     }, [])

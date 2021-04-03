@@ -3,4 +3,19 @@
     float: center;
     padding-bottom: 0px;
     width: 100%;
+    height: 90%;
+    overflow: scroll;
+}
+
+.title{
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.cards{
+    height: 100%;
+    overflow: scroll;
 }
